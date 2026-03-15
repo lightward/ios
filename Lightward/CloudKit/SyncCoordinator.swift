@@ -42,9 +42,9 @@ actor SyncCoordinator {
         do {
             let zone = CKRecordZone(zoneID: SessionRecordConverter.zoneID)
             try await database.save(zone)
-            print("SyncCoordinator: Zone ready")
+            Log.sync.info("SyncCoordinator: Zone ready")
         } catch {
-            print("SyncCoordinator: Zone setup: \(error.localizedDescription)")
+            Log.sync.info("SyncCoordinator: Zone setup: \(error.localizedDescription)")
         }
     }
 
@@ -59,7 +59,7 @@ actor SyncCoordinator {
         do {
             try await engine?.fetchChanges()
         } catch {
-            print("SyncCoordinator: Fetch error: \(error)")
+            Log.sync.info("SyncCoordinator: Fetch error: \(error)")
         }
     }
 
@@ -130,15 +130,15 @@ actor SyncCoordinator {
         case .sentRecordZoneChanges(let sent):
             for saved in sent.savedRecords {
                 pendingRecords.removeValue(forKey: saved.recordID.recordName)
-                print("SyncCoordinator: Saved \(saved.recordID.recordName)")
+                Log.sync.info("SyncCoordinator: Saved \(saved.recordID.recordName)")
             }
             for failed in sent.failedRecordSaves {
                 pendingRecords.removeValue(forKey: failed.record.recordID.recordName)
-                print("SyncCoordinator: Failed save \(failed.record.recordID.recordName): \(failed.error)")
+                Log.sync.info("SyncCoordinator: Failed save \(failed.record.recordID.recordName): \(failed.error)")
             }
 
         case .accountChange(let change):
-            print("SyncCoordinator: Account change: \(change)")
+            Log.sync.info("SyncCoordinator: Account change: \(change)")
 
         default:
             break

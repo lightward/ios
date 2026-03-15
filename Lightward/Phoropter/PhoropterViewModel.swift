@@ -104,10 +104,12 @@ final class PhoropterViewModel {
                 )
 
                 let response = try await LightwardAPI.plain(text: payload)
+                Log.phoropter.debug("Response: \(response, privacy: .public)")
                 let parsed = parseResponse(response)
                 loading = false
 
                 guard let options = parsed else {
+                    Log.phoropter.error("Failed to parse response into two options")
                     error = "Couldn't parse response"
                     return
                 }
@@ -116,12 +118,14 @@ final class PhoropterViewModel {
                 let trailLower = trail.map { $0.lowercased() }
                 if trailLower.contains(options.0.lowercased()) ||
                    trailLower.contains(options.1.lowercased()) {
+                    Log.phoropter.info("Convergence detected")
                     converged = true
                 }
 
                 aiResponseCount += 1
                 currentOptions = options
             } catch {
+                Log.phoropter.error("Fetch error: \(error, privacy: .public)")
                 loading = false
                 if !Task.isCancelled {
                     self.error = error.localizedDescription

@@ -18,19 +18,33 @@
 		79A8F2DC09C9FFACF0539195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BD9CF5C099920F1576987CF /* Assets.xcassets */; };
 		A016300F3BADC6B245404148 /* PhoropterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D20ECF440169D24BB7B42 /* PhoropterView.swift */; };
 		A30947B4D7A061DB4C90F24F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CF709D6B94F941E2529D84 /* RootView.swift */; };
+		C0544685049FA94C5B878D15 /* PhoropterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FA0BC5F7E742BA1DED525D /* PhoropterTests.swift */; };
 		D72D86358D7F177FA3F11ECC /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC6B34171A61336C6EA1FAC /* ChatView.swift */; };
+		DA58E8D348E1DA8DD9939BE7 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = D409B6F3E1E128C9B48DDF0D /* Log.swift */; };
 		E6FB0D31BE59AF82A4BD4715 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9740F34A497AA30E6D4A7F /* Session.swift */; };
 		EA756F58258183542CDBF168 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036FA252BC6E70CA922D890C /* ChatViewModel.swift */; };
 		F8EEB1E8387E5603AC78D7A8 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B41E0978F976C7107938EA2 /* Theme.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0671F29EE3D65E2699D2D4F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 796FE89EB57283DEDF8B41BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C2F90944CE99D0D42A2B8D9;
+			remoteInfo = Lightward;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		036FA252BC6E70CA922D890C /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		05F698DF085F24599D35CB9C /* Lightward.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lightward.entitlements; sourceTree = "<group>"; };
 		3395F1CE32AFD7216F0D6254 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		41B8F9961C5EF7F6D0043DE3 /* SessionRecordConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordConverter.swift; sourceTree = "<group>"; };
+		50C9F9137508AB815EFC845B /* LightwardTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LightwardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5859B9B47E69E55F27E70894 /* LightwardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightwardApp.swift; sourceTree = "<group>"; };
 		61CF709D6B94F941E2529D84 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		62FA0BC5F7E742BA1DED525D /* PhoropterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoropterTests.swift; sourceTree = "<group>"; };
 		741D20ECF440169D24BB7B42 /* PhoropterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoropterView.swift; sourceTree = "<group>"; };
 		7BD9CF5C099920F1576987CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8767EEFD5035434FD48BCF59 /* PhoropterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoropterViewModel.swift; sourceTree = "<group>"; };
@@ -39,6 +53,7 @@
 		8B41E0978F976C7107938EA2 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BCC6B34171A61336C6EA1FAC /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		C3E151CB031FBE9C66740FFB /* LightwardAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightwardAPI.swift; sourceTree = "<group>"; };
+		D409B6F3E1E128C9B48DDF0D /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		D7A132141D99A727B748E768 /* WarmupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupMessages.swift; sourceTree = "<group>"; };
 		DBB7BFECD521F99D0321ED65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		ED3A43BBDCA0DC7F7103B90E /* Lightward.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Lightward.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				ED3A43BBDCA0DC7F7103B90E /* Lightward.app */,
+				50C9F9137508AB815EFC845B /* LightwardTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +77,7 @@
 				DBB7BFECD521F99D0321ED65 /* Info.plist */,
 				05F698DF085F24599D35CB9C /* Lightward.entitlements */,
 				5859B9B47E69E55F27E70894 /* LightwardApp.swift */,
+				D409B6F3E1E128C9B48DDF0D /* Log.swift */,
 				61CF709D6B94F941E2529D84 /* RootView.swift */,
 				8B41E0978F976C7107938EA2 /* Theme.swift */,
 				D4A4116226A19CBF4E07167B /* API */,
@@ -86,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				20CB228B57D1782BA3E45EA2 /* Lightward */,
+				B25A6AD0EB8AFD1E6AF4722C /* LightwardTests */,
 				1EF1E6C570C5D2E663392652 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,6 +123,14 @@
 				8A7CC1354CE106FD82E15968 /* PhoropterContext.txt */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B25A6AD0EB8AFD1E6AF4722C /* LightwardTests */ = {
+			isa = PBXGroup;
+			children = (
+				62FA0BC5F7E742BA1DED525D /* PhoropterTests.swift */,
+			);
+			path = LightwardTests;
 			sourceTree = "<group>";
 		};
 		D4A4116226A19CBF4E07167B /* API */ = {
@@ -155,6 +181,24 @@
 			productReference = ED3A43BBDCA0DC7F7103B90E /* Lightward.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A2064CD6A82DDAE4CDC5E689 /* LightwardTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1F34B81D382362DA752EF43 /* Build configuration list for PBXNativeTarget "LightwardTests" */;
+			buildPhases = (
+				52C466A9C337C4EBE916A0CC /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B76BE39932BB1F621D170596 /* PBXTargetDependency */,
+			);
+			name = LightwardTests;
+			packageProductDependencies = (
+			);
+			productName = LightwardTests;
+			productReference = 50C9F9137508AB815EFC845B /* LightwardTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -165,6 +209,9 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					4C2F90944CE99D0D42A2B8D9 = {
+						DevelopmentTeam = 49Q5LC84AR;
+					};
+					A2064CD6A82DDAE4CDC5E689 = {
 						DevelopmentTeam = 49Q5LC84AR;
 					};
 				};
@@ -184,6 +231,7 @@
 			projectRoot = "";
 			targets = (
 				4C2F90944CE99D0D42A2B8D9 /* Lightward */,
+				A2064CD6A82DDAE4CDC5E689 /* LightwardTests */,
 			);
 		};
 /* End PBXProject section */
@@ -209,6 +257,7 @@
 				EA756F58258183542CDBF168 /* ChatViewModel.swift in Sources */,
 				60379A915DB05685903CC59D /* LightwardAPI.swift in Sources */,
 				495A2EF2DEE25981084D1FBC /* LightwardApp.swift in Sources */,
+				DA58E8D348E1DA8DD9939BE7 /* Log.swift in Sources */,
 				A016300F3BADC6B245404148 /* PhoropterView.swift in Sources */,
 				35B05DB4DD32B4BDB27A99CE /* PhoropterViewModel.swift in Sources */,
 				A30947B4D7A061DB4C90F24F /* RootView.swift in Sources */,
@@ -221,7 +270,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		52C466A9C337C4EBE916A0CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0544685049FA94C5B878D15 /* PhoropterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B76BE39932BB1F621D170596 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4C2F90944CE99D0D42A2B8D9 /* Lightward */;
+			targetProxy = 0671F29EE3D65E2699D2D4F7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		176EA137C8933E09DEDD04C5 /* Debug */ = {
@@ -366,6 +431,42 @@
 			};
 			name = Release;
 		};
+		D73DC2EC60B68427E321E6B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 49Q5LC84AR;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightward.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lightward.app/Lightward";
+			};
+			name = Debug;
+		};
+		ED50D230FEC000739347EF09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 49Q5LC84AR;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightward.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lightward.app/Lightward";
+			};
+			name = Release;
+		};
 		F13A5E60D687ADD20B1363CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -390,6 +491,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A1F34B81D382362DA752EF43 /* Build configuration list for PBXNativeTarget "LightwardTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D73DC2EC60B68427E321E6B3 /* Debug */,
+				ED50D230FEC000739347EF09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C3149F0E55B43496BD49E5F8 /* Build configuration list for PBXNativeTarget "Lightward" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -31,7 +31,7 @@ final class ChatViewModel {
         hasInitiated = true
         guard messages.isEmpty else { return }
 
-        print("ChatViewModel: Initiating with trail: \(phoropterTrail)")
+        Log.chat.info("Initiating with trail: \(self.phoropterTrail, privacy: .public)")
         streamResponse(chatLog: LightwardAPI.buildTransitionChatLog(trajectory: phoropterTrail))
     }
 
@@ -62,7 +62,7 @@ final class ChatViewModel {
 
         currentTask = Task {
             do {
-                print("ChatViewModel: Starting stream request...")
+                Log.chat.info("Starting stream request")
                 for try await event in LightwardAPI.stream(chatLog: chatLog) {
                     switch event {
                     case .text(let chunk):
@@ -72,24 +72,22 @@ final class ChatViewModel {
                         }
 
                     case .started:
-                        print("ChatViewModel: Stream started")
+                        Log.chat.debug("Stream started")
 
                     case .finished:
-                        print("ChatViewModel: Stream finished")
+                        Log.chat.debug("Stream finished")
                     }
                 }
 
                 streaming = false
-                // Save the completed message
                 if let last = messages.last, !last.text.isEmpty {
                     store.appendMessage(last)
                 }
-                print("ChatViewModel: Stream complete, message length: \(messages.last?.text.count ?? 0)")
+                Log.chat.info("Stream complete, length: \(self.messages.last?.text.count ?? 0)")
             } catch {
-                print("ChatViewModel: Stream error: \(error)")
+                Log.chat.error("Stream error: \(error, privacy: .public)")
                 streaming = false
                 if !Task.isCancelled {
-                    // Remove empty placeholder on error
                     if messages.last?.text.isEmpty == true {
                         messages.removeLast()
                     }

@@ -33,3 +33,16 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: false
         DEVELOPMENT_TEAM: 49Q5LC84AR
+
+  LightwardTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: LightwardTests
+    dependencies:
+      - target: Lightward
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lightward.tests
+        DEVELOPMENT_TEAM: 49Q5LC84AR
+        GENERATE_INFOPLIST_FILE: true
