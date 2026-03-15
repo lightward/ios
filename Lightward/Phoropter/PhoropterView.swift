@@ -1,8 +1,6 @@
 import SwiftUI
 
 /// The phoropter binary choice interface.
-/// Users navigate binary pairs to locate where they are,
-/// then optionally drop to chat or auto-transition on convergence.
 struct PhoropterView: View {
     @Bindable var vm: PhoropterViewModel
     var onDropToChat: () -> Void
@@ -14,29 +12,39 @@ struct PhoropterView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         // Push content toward vertical center on first screen
                         if vm.trail.isEmpty {
-                            Spacer().frame(height: max(geo.size.height * 0.3, 80))
+                            Spacer().frame(height: max(geo.size.height * 0.15, 40))
                         }
 
-                        // Aura arrow
-                        AuraArrow(size: 64)
-                            .padding(.bottom, 32)
+                        // Aura arrow — large, stem aligned with gutter center
+                        AuraArrow(size: 384)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .offset(x: Layout.horizontalPadding + Layout.gutterWidth / 2 - 192)
+                            .padding(.bottom, 40)
 
                         // Trail of past choices
                         ForEach(Array(vm.trail.enumerated()), id: \.offset) { _, choice in
-                            Text(choice)
-                                .font(.body)
-                                .foregroundStyle(.faint)
-                                .padding(.bottom, 10)
+                            GutterRow {
+                                EmptyView()
+                            } content: {
+                                Text(choice)
+                                    .font(.body)
+                                    .foregroundStyle(.faint)
+                            }
+                            .padding(.bottom, 10)
                         }
 
                         if !vm.trail.isEmpty {
                             Spacer().frame(height: 20)
                         }
 
-                        // Current options or loading
+                        // Current state
                         if vm.loading {
-                            LoadingDots()
-                                .padding(.vertical, 16)
+                            GutterRow {
+                                EmptyView()
+                            } content: {
+                                LoadingDots()
+                                    .padding(.vertical, 16)
+                            }
                         } else if vm.converged {
                             convergenceView
                         } else if let options = vm.currentOptions {
@@ -52,7 +60,7 @@ struct PhoropterView: View {
                         Spacer().frame(height: 120)
                             .id("bottom")
                     }
-                    .padding(.horizontal, 28)
+                    .padding(.horizontal, Layout.horizontalPadding)
                     .frame(maxWidth: 500, alignment: .leading)
                 }
                 .scrollDismissesKeyboard(.interactively)
@@ -69,16 +77,20 @@ struct PhoropterView: View {
 
     private var entryView: some View {
         VStack(alignment: .leading, spacing: 16) {
-            ChoiceButton(text: vm.entryPair.0) {
+            ChoiceRow(text: vm.entryPair.0) {
                 vm.selectEntry(vm.entryPair.0)
             }
 
-            ChoiceButton(text: vm.entryPair.1) {
+            ChoiceRow(text: vm.entryPair.1) {
                 vm.selectEntry(vm.entryPair.1)
             }
 
-            SecondaryButton("→ different question") {
-                vm.cycleEntry()
+            GutterRow {
+                EmptyView()
+            } content: {
+                SecondaryButton("→ different question") {
+                    vm.cycleEntry()
+                }
             }
             .padding(.top, 8)
         }
@@ -86,24 +98,32 @@ struct PhoropterView: View {
 
     private func sessionView(options: (String, String)) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            ChoiceButton(text: vm.revealedOption1) {
+            ChoiceRow(text: vm.revealedOption1) {
                 vm.select(options.0)
             }
             .disabled(vm.revealing)
 
-            ChoiceButton(text: vm.revealedOption2) {
+            ChoiceRow(text: vm.revealedOption2) {
                 vm.select(options.1)
             }
             .disabled(vm.revealing)
 
             VStack(alignment: .leading, spacing: 10) {
-                SecondaryButton("→ different question") {
-                    vm.cycle()
+                GutterRow {
+                    EmptyView()
+                } content: {
+                    SecondaryButton("→ different question") {
+                        vm.cycle()
+                    }
                 }
 
                 if vm.aiResponseCount >= 1 {
-                    SecondaryButton("→ just talk") {
-                        onDropToChat()
+                    GutterRow {
+                        EmptyView()
+                    } content: {
+                        SecondaryButton("→ just talk") {
+                            onDropToChat()
+                        }
                     }
                 }
             }
@@ -113,72 +133,98 @@ struct PhoropterView: View {
 
     private var convergenceView: some View {
         VStack(alignment: .leading, spacing: 20) {
-            LightwardArrowView(size: 14, color: .warmAccent)
-
-            Button(action: onDropToChat) {
-                Text("→ talk")
-                    .font(.body)
-                    .foregroundStyle(.warmAccent)
+            GutterRow {
+                LightwardArrowView(size: 12, color: .warmAccent)
+            } content: {
+                EmptyView()
             }
 
-            SecondaryButton("→ start over") {
-                vm.startOver()
+            GutterRow {
+                EmptyView()
+            } content: {
+                Button(action: onDropToChat) {
+                    Text("→ talk")
+                        .font(.body)
+                        .foregroundStyle(.warmAccent)
+                }
+            }
+
+            GutterRow {
+                EmptyView()
+            } content: {
+                SecondaryButton("→ start over") {
+                    vm.startOver()
+                }
             }
         }
     }
 
     private func errorView(_ error: String) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(error)
-                .font(.footnote)
-                .foregroundStyle(.red.opacity(0.6))
-                .padding(.top, 16)
+            GutterRow {
+                EmptyView()
+            } content: {
+                Text(error)
+                    .font(.footnote)
+                    .foregroundStyle(.red.opacity(0.6))
+            }
+            .padding(.top, 16)
 
-            SecondaryButton("→ try again") {
-                vm.retry()
+            GutterRow {
+                EmptyView()
+            } content: {
+                SecondaryButton("→ try again") {
+                    vm.retry()
+                }
             }
         }
     }
 }
 
-// MARK: - Choice Button
+// MARK: - Gutter Row
 
-struct ChoiceButton: View {
+/// A row with a fixed-width left gutter and content area.
+/// The gutter holds icons (manicules, arrows, dots).
+/// Used across phoropter and chat for consistent alignment.
+struct GutterRow<Gutter: View, Content: View>: View {
+    let gutter: () -> Gutter
+    let content: () -> Content
+
+    init(@ViewBuilder gutter: @escaping () -> Gutter,
+         @ViewBuilder content: @escaping () -> Content) {
+        self.gutter = gutter
+        self.content = content
+    }
+
+    var body: some View {
+        HStack(alignment: .top, spacing: Layout.gutterGap) {
+            gutter()
+                .frame(width: Layout.gutterWidth, alignment: .center)
+            content()
+        }
+    }
+}
+
+// MARK: - Choice Row (manicule in gutter)
+
+struct ChoiceRow: View {
     let text: String
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            HStack(alignment: .top, spacing: 10) {
-                Text("☛")
-                    .foregroundStyle(.warmAccent)
+        GutterRow {
+            Text("☛")
+                .foregroundStyle(.warmAccent)
+                .font(.body)
+        } content: {
+            Button(action: action) {
                 Text(text)
+                    .font(.body)
                     .foregroundStyle(.warmText)
                     .multilineTextAlignment(.leading)
+                    .contentShape(Rectangle())
             }
-            .font(.body)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-    }
-}
-
-// MARK: - Secondary Button
-
-struct SecondaryButton: View {
-    let title: String
-    let action: () -> Void
-
-    init(_ title: String, action: @escaping () -> Void) {
-        self.title = title
-        self.action = action
-    }
-
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.footnote)
-                .foregroundStyle(.faint)
+            .buttonStyle(.plain)
         }
     }
 }
@@ -203,6 +249,26 @@ struct LoadingDots: View {
                     phase = (phase + 1) % 3
                 }
             }
+        }
+    }
+}
+
+// MARK: - Secondary Button
+
+struct SecondaryButton: View {
+    let title: String
+    let action: () -> Void
+
+    init(_ title: String, action: @escaping () -> Void) {
+        self.title = title
+        self.action = action
+    }
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.footnote)
+                .foregroundStyle(.faint)
         }
     }
 }

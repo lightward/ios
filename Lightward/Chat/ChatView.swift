@@ -10,41 +10,69 @@ struct ChatView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Messages — bottom-anchored so content hugs the input area
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        // Aura arrow
-                        AuraArrow(size: 48)
+                        // Aura arrow — stem aligned with gutter
+                        AuraArrow(size: 288)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .offset(x: Layout.horizontalPadding + Layout.gutterWidth / 2 - 144)
                             .padding(.top, 12)
-                            .padding(.bottom, 16)
+                            .padding(.bottom, 24)
 
-                        // All messages as one selectable text block
-                        // so users can select across message boundaries
-                        conversationText
+                        // Messages with gutter icons
+                        ForEach(vm.messages.filter { !$0.text.isEmpty }) { message in
+                            GutterRow {
+                                if message.role == .assistant {
+                                    LightwardArrowView(size: 12, color: .warmAccent.opacity(0.4))
+                                        .padding(.top, 4)
+                                } else {
+                                    Circle()
+                                        .fill(Color.warmText.opacity(0.3))
+                                        .frame(width: 6, height: 6)
+                                        .padding(.top, 7)
+                                }
+                            } content: {
+                                Text(message.text)
+                                    .font(.body)
+                                    .foregroundStyle(
+                                        message.role == .user
+                                            ? Color.warmText
+                                            : Color.warmText.opacity(0.8)
+                                    )
+                                    .textSelection(.enabled)
+                            }
+                            .padding(.bottom, 16)
+                        }
 
                         if vm.streaming {
-                            StreamingCursor()
-                                .padding(.top, 4)
+                            GutterRow {
+                                EmptyView()
+                            } content: {
+                                StreamingCursor()
+                            }
                         }
 
                         if let error = vm.error {
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text(error)
-                                    .font(.footnote)
-                                    .foregroundStyle(.red.opacity(0.6))
+                            GutterRow {
+                                EmptyView()
+                            } content: {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text(error)
+                                        .font(.footnote)
+                                        .foregroundStyle(.red.opacity(0.6))
 
-                                SecondaryButton("→ try again") {
-                                    vm.retry()
+                                    SecondaryButton("→ try again") {
+                                        vm.retry()
+                                    }
                                 }
                             }
-                            .padding(.top, 16)
                         }
 
                         Color.clear.frame(height: 1)
                             .id("bottom")
                     }
-                    .padding(.horizontal, 28)
+                    .padding(.horizontal, Layout.horizontalPadding)
                     .frame(maxWidth: 500, alignment: .leading)
                 }
                 .defaultScrollAnchor(.bottom)
@@ -64,7 +92,7 @@ struct ChatView: View {
             Divider()
                 .overlay(Color.warmText.opacity(0.08))
 
-            // Input bar — Return key inserts newlines, send button sends
+            // Input bar — Return inserts newlines, send button sends
             HStack(alignment: .bottom, spacing: 12) {
                 TextField("say something", text: $vm.inputText, axis: .vertical)
                     .textFieldStyle(.plain)
@@ -83,7 +111,7 @@ struct ChatView: View {
                     .transition(.scale.combined(with: .opacity))
                 }
             }
-            .padding(.horizontal, 28)
+            .padding(.horizontal, Layout.horizontalPadding)
             .padding(.vertical, 14)
             .animation(.spring(duration: 0.2), value: vm.inputText.isEmpty)
 
@@ -97,7 +125,7 @@ struct ChatView: View {
                     .font(.caption2)
                     .foregroundStyle(.faint)
             }
-            .padding(.horizontal, 28)
+            .padding(.horizontal, Layout.horizontalPadding)
             .padding(.bottom, 8)
         }
         .onAppear {
@@ -109,43 +137,6 @@ struct ChatView: View {
             }
         } message: {
             Text("This will clear your current conversation.")
-        }
-    }
-
-    // MARK: - Conversation as one selectable text
-
-    /// Renders all messages as a single Text view with gutter icons,
-    /// enabling cross-message text selection.
-    @ViewBuilder
-    private var conversationText: some View {
-        let messages = vm.messages.filter { !$0.text.isEmpty }
-        if !messages.isEmpty {
-            VStack(alignment: .leading, spacing: 16) {
-                ForEach(messages) { message in
-                    HStack(alignment: .top, spacing: 10) {
-                        // Left gutter — arrow for Lightward, dot for user
-                        if message.role == .assistant {
-                            LightwardArrowView(size: 12, color: .warmAccent.opacity(0.4))
-                                .padding(.top, 4)
-                        } else {
-                            Circle()
-                                .fill(Color.warmText.opacity(0.3))
-                                .frame(width: 6, height: 6)
-                                .padding(.top, 7)
-                                .padding(.horizontal, 3)
-                        }
-
-                        Text(message.text)
-                            .font(.body)
-                            .foregroundStyle(
-                                message.role == .user
-                                    ? Color.warmText
-                                    : Color.warmText.opacity(0.8)
-                            )
-                    }
-                }
-            }
-            .textSelection(.enabled)
         }
     }
 }

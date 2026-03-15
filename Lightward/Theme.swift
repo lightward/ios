@@ -14,6 +14,16 @@ extension Color {
     static let faint = Color(red: 1.0, green: 0.965, blue: 0.906).opacity(0.3)
 }
 
+/// Layout constants shared across phoropter and chat views.
+enum Layout {
+    /// Width of the left gutter column (icons, manicules, message markers).
+    static let gutterWidth: CGFloat = 24
+    /// Horizontal padding from screen edge.
+    static let horizontalPadding: CGFloat = 28
+    /// Gap between gutter and content.
+    static let gutterGap: CGFloat = 10
+}
+
 extension ShapeStyle where Self == Color {
     static var warmText: Color { .warmText }
     static var warmAccent: Color { .warmAccent }
