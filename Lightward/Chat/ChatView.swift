@@ -6,10 +6,11 @@ struct ChatView: View {
     var onStartOver: () -> Void
 
     @FocusState private var inputFocused: Bool
+    @State private var showingStartOverConfirmation = false
 
     var body: some View {
         VStack(spacing: 0) {
-            // Messages
+            // Messages — bottom-aligned so content hugs the input area
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
@@ -40,12 +41,13 @@ struct ChatView: View {
                             }
                         }
 
-                        Spacer().frame(height: 80)
+                        Color.clear.frame(height: 1)
                             .id("bottom")
                     }
                     .padding(.horizontal, 28)
                     .frame(maxWidth: 500, alignment: .leading)
                 }
+                .defaultScrollAnchor(.bottom)
                 .scrollDismissesKeyboard(.interactively)
                 .onChange(of: vm.displayedText) {
                     withAnimation(.spring(duration: 0.3)) {
@@ -92,7 +94,7 @@ struct ChatView: View {
             // Footer
             HStack {
                 SecondaryButton("→ start over") {
-                    onStartOver()
+                    showingStartOverConfirmation = true
                 }
                 Spacer()
                 Text("your conversation is private")
@@ -104,6 +106,14 @@ struct ChatView: View {
         }
         .onAppear {
             vm.initiateIfNeeded()
+        }
+        .confirmationDialog("Start over?", isPresented: $showingStartOverConfirmation) {
+            Button("Start over", role: .destructive) {
+                onStartOver()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This will clear your current conversation.")
         }
     }
 }

@@ -88,13 +88,15 @@ struct PhoropterView: View {
 
     private func sessionView(options: (String, String)) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            ChoiceButton(text: options.0) {
+            ChoiceButton(text: vm.revealedOption1) {
                 vm.select(options.0)
             }
+            .disabled(vm.revealing)
 
-            ChoiceButton(text: options.1) {
+            ChoiceButton(text: vm.revealedOption2) {
                 vm.select(options.1)
             }
+            .disabled(vm.revealing)
 
             VStack(alignment: .leading, spacing: 10) {
                 SecondaryButton("→ different question") {

@@ -17,6 +17,9 @@ final class PhoropterViewModel {
     var entrySelection: String?
     var history: [String] = []
     var currentOptions: (String, String)?
+    var revealedOption1 = ""
+    var revealedOption2 = ""
+    var revealing = false
     var loading = false
     var converged = false
     var error: String?
@@ -25,6 +28,7 @@ final class PhoropterViewModel {
     private let store: Store
     private let phoropterContext: String
     private var currentTask: Task<Void, Never>?
+    private var revealTask: Task<Void, Never>?
 
     var trail: [String] {
         guard let entry = entrySelection else { return [] }
@@ -124,6 +128,7 @@ final class PhoropterViewModel {
 
                 aiResponseCount += 1
                 currentOptions = options
+                revealOptions(options)
             } catch {
                 Log.phoropter.error("Fetch error: \(error, privacy: .public)")
                 loading = false
@@ -132,6 +137,32 @@ final class PhoropterViewModel {
                     ErrorReporter.report(category: "phoropter", message: error.localizedDescription)
                 }
             }
+        }
+    }
+
+    private func revealOptions(_ options: (String, String)) {
+        revealTask?.cancel()
+        revealedOption1 = ""
+        revealedOption2 = ""
+        revealing = true
+
+        revealTask = Task {
+            // Reveal first option character by character
+            for char in options.0 {
+                revealedOption1.append(char)
+                try? await Task.sleep(for: .milliseconds(Int.random(in: 20...50)))
+            }
+
+            // Brief pause between options
+            try? await Task.sleep(for: .milliseconds(150))
+
+            // Reveal second option
+            for char in options.1 {
+                revealedOption2.append(char)
+                try? await Task.sleep(for: .milliseconds(Int.random(in: 20...50)))
+            }
+
+            revealing = false
         }
     }
 
