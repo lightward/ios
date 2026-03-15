@@ -17,10 +17,8 @@ struct PhoropterView: View {
                             Spacer().frame(height: max(geo.size.height * 0.3, 80))
                         }
 
-                        // Observer mark
-                        Text("⏿")
-                            .font(.system(size: 20, weight: .light))
-                            .foregroundStyle(.warmAccent.opacity(0.6))
+                        // Arrow mark
+                        LightwardArrowView(size: 18, color: .warmAccent.opacity(0.6))
                             .padding(.bottom, 32)
 
                         // Trail of past choices
@@ -115,9 +113,7 @@ struct PhoropterView: View {
 
     private var convergenceView: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("⏿")
-                .font(.system(size: 16, weight: .light))
-                .foregroundStyle(.warmAccent)
+            LightwardArrowView(size: 14, color: .warmAccent)
 
             Button(action: onDropToChat) {
                 Text("→ talk")

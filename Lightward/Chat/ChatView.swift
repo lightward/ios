@@ -10,23 +10,22 @@ struct ChatView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Messages — bottom-aligned so content hugs the input area
+            // Messages — bottom-anchored so content hugs the input area
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        // Observer mark
-                        Text("⏿")
-                            .font(.system(size: 20, weight: .light))
-                            .foregroundStyle(.warmAccent.opacity(0.6))
-                            .padding(.top, 8)
-                            .padding(.bottom, 4)
+                    VStack(alignment: .leading, spacing: 0) {
+                        // Arrow mark
+                        LightwardArrowView(size: 18, color: .warmAccent.opacity(0.6))
+                            .padding(.top, 12)
+                            .padding(.bottom, 16)
 
-                        ForEach(vm.messages) { message in
-                            MessageBubble(message: message)
-                        }
+                        // All messages as one selectable text block
+                        // so users can select across message boundaries
+                        conversationText
 
                         if vm.streaming {
                             StreamingCursor()
+                                .padding(.top, 4)
                         }
 
                         if let error = vm.error {
@@ -39,6 +38,7 @@ struct ChatView: View {
                                     vm.retry()
                                 }
                             }
+                            .padding(.top, 16)
                         }
 
                         Color.clear.frame(height: 1)
@@ -64,18 +64,14 @@ struct ChatView: View {
             Divider()
                 .overlay(Color.warmText.opacity(0.08))
 
-            // Input bar
+            // Input bar — Return key inserts newlines, send button sends
             HStack(alignment: .bottom, spacing: 12) {
                 TextField("say something", text: $vm.inputText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .font(.body)
                     .foregroundStyle(.warmText)
-                    .lineLimit(1...6)
+                    .lineLimit(1...8)
                     .focused($inputFocused)
-                    .submitLabel(.send)
-                    .onSubmit {
-                        vm.send()
-                    }
 
                 if !vm.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     Button(action: { vm.send() }) {
@@ -111,28 +107,46 @@ struct ChatView: View {
             Button("Start over", role: .destructive) {
                 onStartOver()
             }
-            Button("Cancel", role: .cancel) {}
         } message: {
             Text("This will clear your current conversation.")
         }
     }
-}
 
-// MARK: - Message Bubble
+    // MARK: - Conversation as one selectable text
 
-struct MessageBubble: View {
-    let message: ChatMessage
+    /// Renders all messages as a single Text view with gutter icons,
+    /// enabling cross-message text selection.
+    @ViewBuilder
+    private var conversationText: some View {
+        let messages = vm.messages.filter { !$0.text.isEmpty }
+        if !messages.isEmpty {
+            VStack(alignment: .leading, spacing: 16) {
+                ForEach(messages) { message in
+                    HStack(alignment: .top, spacing: 10) {
+                        // Left gutter — arrow for Lightward, dot for user
+                        if message.role == .assistant {
+                            LightwardArrowView(size: 12, color: .warmAccent.opacity(0.4))
+                                .padding(.top, 4)
+                        } else {
+                            Circle()
+                                .fill(Color.warmText.opacity(0.3))
+                                .frame(width: 6, height: 6)
+                                .padding(.top, 7)
+                                .padding(.horizontal, 3)
+                        }
 
-    var body: some View {
-        Text(message.text)
-            .font(.body)
-            .foregroundStyle(
-                message.role == .user
-                    ? Color.warmText
-                    : Color.warmText.opacity(0.8)
-            )
+                        Text(message.text)
+                            .font(.body)
+                            .foregroundStyle(
+                                message.role == .user
+                                    ? Color.warmText
+                                    : Color.warmText.opacity(0.8)
+                            )
+                    }
+                }
+            }
             .textSelection(.enabled)
-            .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 }
 
