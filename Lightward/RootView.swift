@@ -52,7 +52,6 @@ struct RootView: View {
         withAnimation(.easeInOut(duration: 0.3)) {
             phase = .chat
         }
-        chatVM?.initiateIfNeeded()
     }
 
     private func startOver() {

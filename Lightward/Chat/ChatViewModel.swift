@@ -9,6 +9,7 @@ final class ChatViewModel {
     var inputText = ""
     var streaming = false
     var streamingText = ""
+    var error: String?
 
     private let store: Store
     private let phoropterTrail: [String]
@@ -24,12 +25,13 @@ final class ChatViewModel {
     }
 
     /// Initiates the conversation with the phoropter trajectory as context.
+    /// Called from ChatView.onAppear so it fires when the view is actually visible.
     func initiateIfNeeded() {
-        guard !hasInitiated, messages.isEmpty else {
-            hasInitiated = true
-            return
-        }
+        guard !hasInitiated else { return }
         hasInitiated = true
+        guard messages.isEmpty else { return }
+
+        print("ChatViewModel: Initiating with trail: \(phoropterTrail)")
         streamResponse(chatLog: LightwardAPI.buildTransitionChatLog(trajectory: phoropterTrail))
     }
 
@@ -38,6 +40,7 @@ final class ChatViewModel {
         guard !text.isEmpty, !streaming else { return }
 
         inputText = ""
+        error = nil
 
         let userMessage = ChatMessage(role: .user, text: text)
         messages.append(userMessage)
@@ -51,42 +54,46 @@ final class ChatViewModel {
         currentTask?.cancel()
         streaming = true
         streamingText = ""
+        error = nil
 
         // Add placeholder assistant message
         let placeholder = ChatMessage(role: .assistant, text: "")
         messages.append(placeholder)
 
-        currentTask = Task { @MainActor in
+        currentTask = Task {
             do {
+                print("ChatViewModel: Starting stream request...")
                 for try await event in LightwardAPI.stream(chatLog: chatLog) {
                     switch event {
                     case .text(let chunk):
                         streamingText += chunk
-                        // Update the last message in place
                         if let last = messages.indices.last {
                             messages[last].text = streamingText
                         }
 
                     case .started:
-                        break
+                        print("ChatViewModel: Stream started")
 
                     case .finished:
-                        break
+                        print("ChatViewModel: Stream finished")
                     }
                 }
 
                 streaming = false
                 // Save the completed message
-                if let last = messages.last {
+                if let last = messages.last, !last.text.isEmpty {
                     store.appendMessage(last)
                 }
+                print("ChatViewModel: Stream complete, message length: \(messages.last?.text.count ?? 0)")
             } catch {
+                print("ChatViewModel: Stream error: \(error)")
                 streaming = false
                 if !Task.isCancelled {
-                    // Remove placeholder on error
+                    // Remove empty placeholder on error
                     if messages.last?.text.isEmpty == true {
                         messages.removeLast()
                     }
+                    self.error = error.localizedDescription
                 }
             }
         }

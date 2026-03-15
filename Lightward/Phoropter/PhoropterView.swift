@@ -71,8 +71,8 @@ struct PhoropterView: View {
                                     .foregroundStyle(.warmText.opacity(0.4))
                             }
 
-                            // Show "just talk" after second AI response
-                            if vm.aiResponseCount >= 2 {
+                            // Show "just talk" once the first AI-generated pair arrives
+                            if vm.aiResponseCount >= 1 {
                                 Button(action: onDropToChat) {
                                     Text("→ just talk")
                                         .font(.body)

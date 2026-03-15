@@ -26,6 +26,20 @@ struct ChatView: View {
                             StreamingIndicator()
                         }
 
+                        if let error = vm.error {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundStyle(.red.opacity(0.7))
+
+                                Button(action: { vm.initiateIfNeeded() }) {
+                                    Text("→ try again")
+                                        .font(.body)
+                                        .foregroundStyle(.warmAccent)
+                                }
+                            }
+                        }
+
                         Spacer().frame(height: 80)
                             .id("bottom")
                     }
@@ -83,6 +97,9 @@ struct ChatView: View {
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 8)
+        }
+        .onAppear {
+            vm.initiateIfNeeded()
         }
     }
 }
