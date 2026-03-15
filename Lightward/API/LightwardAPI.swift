@@ -67,17 +67,19 @@ enum LightwardAPI {
 
                     // Buffer raw bytes and split on \n\n (SSE message boundary)
                     // Same approach as the lightward.com JS client
-                    var buffer = ""
+                    // Uses Data buffer with UTF-8 decoding to handle multi-byte characters
+                    var rawBuffer = Data()
                     var lineCount = 0
+                    let delimiter = Data("\n\n".utf8)
 
                     for try await byte in bytes {
-                        let char = Character(UnicodeScalar(byte))
-                        buffer.append(char)
+                        rawBuffer.append(byte)
 
                         // Check for \n\n (SSE message boundary)
-                        if buffer.hasSuffix("\n\n") {
-                            let message = buffer.trimmingCharacters(in: .whitespacesAndNewlines)
-                            buffer = ""
+                        if rawBuffer.count >= 2 && rawBuffer.suffix(2) == delimiter {
+                            let message = String(data: rawBuffer, encoding: .utf8)?
+                                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                            rawBuffer = Data()
 
                             guard !message.isEmpty else { continue }
                             lineCount += 1
