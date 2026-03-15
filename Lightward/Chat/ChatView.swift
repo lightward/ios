@@ -64,7 +64,7 @@ struct ChatView: View {
 
             // Input bar
             HStack(alignment: .bottom, spacing: 12) {
-                TextField("", text: $vm.inputText, axis: .vertical)
+                TextField("say something", text: $vm.inputText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .font(.body)
                     .foregroundStyle(.warmText)

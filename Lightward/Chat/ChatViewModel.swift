@@ -20,8 +20,9 @@ final class ChatViewModel {
         self.store = store
         self.phoropterTrail = phoropterTrail
 
-        // Restore any existing chat messages
-        self.messages = store.session.chatMessages
+        // Restore existing chat messages, filtering out empty ones from failed attempts
+        self.messages = store.session.chatMessages.filter { !$0.text.isEmpty }
+        Log.chat.info("Init: \(self.messages.count) restored messages, trail: \(phoropterTrail.count) items")
     }
 
     /// Initiates the conversation with the phoropter trajectory as context.
@@ -29,7 +30,10 @@ final class ChatViewModel {
     func initiateIfNeeded() {
         guard !hasInitiated else { return }
         hasInitiated = true
-        guard messages.isEmpty else { return }
+        guard messages.isEmpty else {
+            Log.chat.info("Skipping initiation: \(self.messages.count) messages already present")
+            return
+        }
 
         Log.chat.info("Initiating with trail: \(self.phoropterTrail, privacy: .public)")
         streamResponse(chatLog: LightwardAPI.buildTransitionChatLog(trajectory: phoropterTrail))
@@ -62,39 +66,47 @@ final class ChatViewModel {
         streamingText = ""
         error = nil
 
-        // Add placeholder assistant message
-        let placeholder = ChatMessage(role: .assistant, text: "")
-        messages.append(placeholder)
-
         currentTask = Task {
             do {
-                Log.chat.info("Starting stream request")
+                Log.chat.info("Stream: sending request (\(chatLog.count) messages in chat_log)")
+                var chunkCount = 0
+
                 for try await event in LightwardAPI.stream(chatLog: chatLog) {
                     switch event {
                     case .text(let chunk):
+                        chunkCount += 1
                         streamingText += chunk
-                        if let last = messages.indices.last {
+                        // Update or create the assistant message
+                        if let last = messages.indices.last, messages[last].role == .assistant {
                             messages[last].text = streamingText
+                        } else {
+                            messages.append(ChatMessage(role: .assistant, text: streamingText))
                         }
 
                     case .started:
-                        Log.chat.debug("Stream started")
+                        Log.chat.debug("Stream: started")
 
                     case .finished:
-                        Log.chat.debug("Stream finished")
+                        Log.chat.debug("Stream: finished after \(chunkCount) chunks")
                     }
                 }
 
                 streaming = false
-                if let last = messages.last, !last.text.isEmpty {
+                Log.chat.info("Stream: complete, \(chunkCount) chunks, final length: \(self.streamingText.count)")
+
+                if chunkCount == 0 {
+                    Log.chat.error("Stream: completed with zero chunks — no content received")
+                    self.error = "No response received"
+                    ErrorReporter.report(category: "chat", message: "Stream completed with zero text chunks")
+                } else if let last = messages.last, !last.text.isEmpty {
                     store.appendMessage(last)
                 }
-                Log.chat.info("Stream complete, length: \(self.messages.last?.text.count ?? 0)")
             } catch {
                 Log.chat.error("Stream error: \(error, privacy: .public)")
                 streaming = false
                 if !Task.isCancelled {
-                    if messages.last?.text.isEmpty == true {
+                    // Remove empty assistant message on error
+                    if let last = messages.indices.last, messages[last].text.isEmpty {
                         messages.removeLast()
                     }
                     self.error = error.localizedDescription

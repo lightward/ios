@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 /// Client for lightward.com API — /api/plain for phoropter, /api/stream for chat.
 enum LightwardAPI {
@@ -29,8 +30,9 @@ enum LightwardAPI {
     }
 
     /// Sends a chat log to /api/stream and yields text chunks as they arrive.
+    /// SSE parsing follows the same approach as the lightward.com JS client:
+    /// buffer raw bytes, split on \n\n, parse each complete message.
     static func stream(chatLog: [[String: Any]]) -> AsyncThrowingStream<StreamEvent, Error> {
-        // Serialize before entering the stream closure so we only capture Sendable Data
         let body: Data
         do {
             body = try JSONSerialization.data(withJSONObject: ["chat_log": chatLog])
@@ -53,37 +55,57 @@ enum LightwardAPI {
                         throw APIError.invalidResponse
                     }
 
+                    Log.api.info("Stream response: HTTP \(http.statusCode)")
+
                     guard http.statusCode == 200 else {
                         var errorBody = ""
-                        for try await line in bytes.lines {
-                            errorBody += line
+                        for try await byte in bytes {
+                            errorBody += String(UnicodeScalar(byte))
                         }
                         throw APIError.httpError(http.statusCode, errorBody)
                     }
 
-                    // Parse SSE stream
-                    // SSE format: "event: type\ndata: json\n\n"
-                    // The "end" event has no data line — just "event: end\n\n"
-                    // Like the JS client, we also treat stream closure as implicit end.
-                    var eventType: String?
-                    var dataBuffer: String?
+                    // Buffer raw bytes and split on \n\n (SSE message boundary)
+                    // Same approach as the lightward.com JS client
+                    var buffer = ""
+                    var lineCount = 0
 
-                    for try await line in bytes.lines {
-                        if line.hasPrefix("event: ") {
-                            eventType = String(line.dropFirst(7))
-                        } else if line.hasPrefix("data: ") {
-                            dataBuffer = String(line.dropFirst(6))
-                        } else if line.isEmpty {
-                            // Empty line = end of SSE message
-                            let event = eventType
-                            let data = dataBuffer
-                            eventType = nil
-                            dataBuffer = nil
+                    for try await byte in bytes {
+                        let char = Character(UnicodeScalar(byte))
+                        buffer.append(char)
 
-                            switch event {
+                        // Check for \n\n (SSE message boundary)
+                        if buffer.hasSuffix("\n\n") {
+                            let message = buffer.trimmingCharacters(in: .whitespacesAndNewlines)
+                            buffer = ""
+
+                            guard !message.isEmpty else { continue }
+                            lineCount += 1
+
+                            // Parse event and data from the message
+                            let eventMatch = message.range(of: "(?m)^event: (.+)$", options: .regularExpression)
+                            let dataMatch = message.range(of: "(?m)^data: (.+)$", options: .regularExpression)
+
+                            var eventType: String?
+                            if let eventMatch {
+                                let eventLine = String(message[eventMatch])
+                                eventType = String(eventLine.dropFirst(7))
+                            }
+
+                            // Handle events without data (like "end")
+                            if eventType == "end" {
+                                Log.api.info("Stream: end event received after \(lineCount) messages")
+                                continuation.finish()
+                                return
+                            }
+
+                            guard let dataMatch else { continue }
+                            let dataLine = String(message[dataMatch])
+                            let dataString = String(dataLine.dropFirst(6))
+
+                            switch eventType {
                             case "content_block_delta":
-                                if let data,
-                                   let jsonData = data.data(using: .utf8),
+                                if let jsonData = dataString.data(using: .utf8),
                                    let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
                                    let delta = json["delta"] as? [String: Any],
                                    let text = delta["text"] as? String {
@@ -97,17 +119,12 @@ enum LightwardAPI {
                                 continuation.yield(.finished)
 
                             case "error":
-                                if let data,
-                                   let jsonData = data.data(using: .utf8),
+                                if let jsonData = dataString.data(using: .utf8),
                                    let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
                                    let error = json["error"] as? [String: Any],
-                                   let message = error["message"] as? String {
-                                    throw APIError.serverError(message)
+                                   let errorMessage = error["message"] as? String {
+                                    throw APIError.serverError(errorMessage)
                                 }
-
-                            case "end":
-                                continuation.finish()
-                                return
 
                             default:
                                 break
@@ -115,9 +132,11 @@ enum LightwardAPI {
                         }
                     }
 
-                    // Stream closed — implicit end (same as JS client's done handler)
+                    // Stream closed — implicit end
+                    Log.api.info("Stream: connection closed after \(lineCount) messages")
                     continuation.finish()
                 } catch {
+                    Log.api.error("Stream error: \(error.localizedDescription, privacy: .public)")
                     continuation.finish(throwing: error)
                 }
             }
@@ -141,7 +160,6 @@ enum LightwardAPI {
     }
 
     /// Builds the plain text payload for a phoropter request (context + trajectory).
-    /// Matches the format used by phoropter.ai's web client.
     static func buildPhoropterPayload(context: String, trajectory: [String]) -> String {
         var payload = context.trimmingCharacters(in: .whitespacesAndNewlines)
         payload += "\n\n---\n\nthe user chose toward these, in order:\n"
