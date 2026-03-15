@@ -18,6 +18,7 @@
 		79A8F2DC09C9FFACF0539195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BD9CF5C099920F1576987CF /* Assets.xcassets */; };
 		A016300F3BADC6B245404148 /* PhoropterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D20ECF440169D24BB7B42 /* PhoropterView.swift */; };
 		A30947B4D7A061DB4C90F24F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CF709D6B94F941E2529D84 /* RootView.swift */; };
+		BA95BB76A2D5D25694C84ADD /* AuraArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD39565947A3FD1E3951984 /* AuraArrow.swift */; };
 		BB04643D71C8E9A5FF04605B /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C428CC7B8AD80BB3F87406A0 /* Arrow.swift */; };
 		BB82AEA850A82F695559AF3C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EAD7376041603014B9B969 /* Secrets.swift */; };
 		C0544685049FA94C5B878D15 /* PhoropterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FA0BC5F7E742BA1DED525D /* PhoropterTests.swift */; };
@@ -49,6 +50,7 @@
 		5859B9B47E69E55F27E70894 /* LightwardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightwardApp.swift; sourceTree = "<group>"; };
 		61CF709D6B94F941E2529D84 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		62FA0BC5F7E742BA1DED525D /* PhoropterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoropterTests.swift; sourceTree = "<group>"; };
+		6FD39565947A3FD1E3951984 /* AuraArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuraArrow.swift; sourceTree = "<group>"; };
 		741D20ECF440169D24BB7B42 /* PhoropterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoropterView.swift; sourceTree = "<group>"; };
 		7BD9CF5C099920F1576987CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8767EEFD5035434FD48BCF59 /* PhoropterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoropterViewModel.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			children = (
 				C428CC7B8AD80BB3F87406A0 /* Arrow.swift */,
 				7BD9CF5C099920F1576987CF /* Assets.xcassets */,
+				6FD39565947A3FD1E3951984 /* AuraArrow.swift */,
 				D8DDBCE51B203ED468D4FBC4 /* ErrorReporter.swift */,
 				DBB7BFECD521F99D0321ED65 /* Info.plist */,
 				05F698DF085F24599D35CB9C /* Lightward.entitlements */,
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB04643D71C8E9A5FF04605B /* Arrow.swift in Sources */,
+				BA95BB76A2D5D25694C84ADD /* AuraArrow.swift in Sources */,
 				D72D86358D7F177FA3F11ECC /* ChatView.swift in Sources */,
 				EA756F58258183542CDBF168 /* ChatViewModel.swift in Sources */,
 				E534B9853A485310DDEE209A /* ErrorReporter.swift in Sources */,
@@ -352,7 +356,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -431,7 +435,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

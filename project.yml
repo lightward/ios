@@ -2,7 +2,7 @@ name: Lightward
 options:
   bundleIdPrefix: com
   deploymentTarget:
-    iOS: "17.0"
+    iOS: "18.0"
   xcodeVersion: "16"
   defaultConfig: Release
 

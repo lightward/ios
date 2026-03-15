@@ -17,8 +17,8 @@ struct PhoropterView: View {
                             Spacer().frame(height: max(geo.size.height * 0.3, 80))
                         }
 
-                        // Arrow mark
-                        LightwardArrowView(size: 18, color: .warmAccent.opacity(0.6))
+                        // Aura arrow
+                        AuraArrow(size: 64)
                             .padding(.bottom, 32)
 
                         // Trail of past choices

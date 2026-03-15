@@ -14,8 +14,8 @@ struct ChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        // Arrow mark
-                        LightwardArrowView(size: 18, color: .warmAccent.opacity(0.6))
+                        // Aura arrow
+                        AuraArrow(size: 48)
                             .padding(.top, 12)
                             .padding(.bottom, 16)
 
