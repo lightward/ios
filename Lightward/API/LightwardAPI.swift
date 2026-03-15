@@ -62,8 +62,11 @@ enum LightwardAPI {
                     }
 
                     // Parse SSE stream
+                    // SSE format: "event: type\ndata: json\n\n"
+                    // The "end" event has no data line — just "event: end\n\n"
+                    // Like the JS client, we also treat stream closure as implicit end.
                     var eventType: String?
-                    var dataBuffer = ""
+                    var dataBuffer: String?
 
                     for try await line in bytes.lines {
                         if line.hasPrefix("event: ") {
@@ -71,17 +74,17 @@ enum LightwardAPI {
                         } else if line.hasPrefix("data: ") {
                             dataBuffer = String(line.dropFirst(6))
                         } else if line.isEmpty {
-                            defer {
-                                eventType = nil
-                                dataBuffer = ""
-                            }
+                            // Empty line = end of SSE message
+                            let event = eventType
+                            let data = dataBuffer
+                            eventType = nil
+                            dataBuffer = nil
 
-                            guard !dataBuffer.isEmpty else { continue }
-
-                            switch eventType {
+                            switch event {
                             case "content_block_delta":
-                                if let data = dataBuffer.data(using: .utf8),
-                                   let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                                if let data,
+                                   let jsonData = data.data(using: .utf8),
+                                   let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
                                    let delta = json["delta"] as? [String: Any],
                                    let text = delta["text"] as? String {
                                     continuation.yield(.text(text))
@@ -94,8 +97,9 @@ enum LightwardAPI {
                                 continuation.yield(.finished)
 
                             case "error":
-                                if let data = dataBuffer.data(using: .utf8),
-                                   let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                                if let data,
+                                   let jsonData = data.data(using: .utf8),
+                                   let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
                                    let error = json["error"] as? [String: Any],
                                    let message = error["message"] as? String {
                                     throw APIError.serverError(message)
@@ -111,6 +115,7 @@ enum LightwardAPI {
                         }
                     }
 
+                    // Stream closed — implicit end (same as JS client's done handler)
                     continuation.finish()
                 } catch {
                     continuation.finish(throwing: error)

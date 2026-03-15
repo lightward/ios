@@ -35,6 +35,12 @@ final class ChatViewModel {
         streamResponse(chatLog: LightwardAPI.buildTransitionChatLog(trajectory: phoropterTrail))
     }
 
+    func retry() {
+        error = nil
+        hasInitiated = false
+        initiateIfNeeded()
+    }
+
     func send() {
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty, !streaming else { return }

@@ -32,7 +32,7 @@ struct ChatView: View {
                                     .font(.caption)
                                     .foregroundStyle(.red.opacity(0.7))
 
-                                Button(action: { vm.initiateIfNeeded() }) {
+                                Button(action: { vm.retry() }) {
                                     Text("→ try again")
                                         .font(.body)
                                         .foregroundStyle(.warmAccent)
