@@ -129,6 +129,7 @@ final class PhoropterViewModel {
                 loading = false
                 if !Task.isCancelled {
                     self.error = error.localizedDescription
+                    ErrorReporter.report(category: "phoropter", message: error.localizedDescription)
                 }
             }
         }

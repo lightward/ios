@@ -98,6 +98,7 @@ final class ChatViewModel {
                         messages.removeLast()
                     }
                     self.error = error.localizedDescription
+                    ErrorReporter.report(category: "chat", message: error.localizedDescription)
                 }
             }
         }

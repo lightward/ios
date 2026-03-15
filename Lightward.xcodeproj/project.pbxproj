@@ -18,9 +18,11 @@
 		79A8F2DC09C9FFACF0539195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BD9CF5C099920F1576987CF /* Assets.xcassets */; };
 		A016300F3BADC6B245404148 /* PhoropterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D20ECF440169D24BB7B42 /* PhoropterView.swift */; };
 		A30947B4D7A061DB4C90F24F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CF709D6B94F941E2529D84 /* RootView.swift */; };
+		BB82AEA850A82F695559AF3C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EAD7376041603014B9B969 /* Secrets.swift */; };
 		C0544685049FA94C5B878D15 /* PhoropterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FA0BC5F7E742BA1DED525D /* PhoropterTests.swift */; };
 		D72D86358D7F177FA3F11ECC /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC6B34171A61336C6EA1FAC /* ChatView.swift */; };
 		DA58E8D348E1DA8DD9939BE7 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = D409B6F3E1E128C9B48DDF0D /* Log.swift */; };
+		E534B9853A485310DDEE209A /* ErrorReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DDBCE51B203ED468D4FBC4 /* ErrorReporter.swift */; };
 		E6FB0D31BE59AF82A4BD4715 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9740F34A497AA30E6D4A7F /* Session.swift */; };
 		EA756F58258183542CDBF168 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036FA252BC6E70CA922D890C /* ChatViewModel.swift */; };
 		F8EEB1E8387E5603AC78D7A8 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B41E0978F976C7107938EA2 /* Theme.swift */; };
@@ -42,6 +44,7 @@
 		3395F1CE32AFD7216F0D6254 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		41B8F9961C5EF7F6D0043DE3 /* SessionRecordConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordConverter.swift; sourceTree = "<group>"; };
 		50C9F9137508AB815EFC845B /* LightwardTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LightwardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		57EAD7376041603014B9B969 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		5859B9B47E69E55F27E70894 /* LightwardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightwardApp.swift; sourceTree = "<group>"; };
 		61CF709D6B94F941E2529D84 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		62FA0BC5F7E742BA1DED525D /* PhoropterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoropterTests.swift; sourceTree = "<group>"; };
@@ -55,6 +58,7 @@
 		C3E151CB031FBE9C66740FFB /* LightwardAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightwardAPI.swift; sourceTree = "<group>"; };
 		D409B6F3E1E128C9B48DDF0D /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		D7A132141D99A727B748E768 /* WarmupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupMessages.swift; sourceTree = "<group>"; };
+		D8DDBCE51B203ED468D4FBC4 /* ErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporter.swift; sourceTree = "<group>"; };
 		DBB7BFECD521F99D0321ED65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		ED3A43BBDCA0DC7F7103B90E /* Lightward.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Lightward.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2A414C3C7EB85A76C921DF3 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
@@ -74,11 +78,13 @@
 			isa = PBXGroup;
 			children = (
 				7BD9CF5C099920F1576987CF /* Assets.xcassets */,
+				D8DDBCE51B203ED468D4FBC4 /* ErrorReporter.swift */,
 				DBB7BFECD521F99D0321ED65 /* Info.plist */,
 				05F698DF085F24599D35CB9C /* Lightward.entitlements */,
 				5859B9B47E69E55F27E70894 /* LightwardApp.swift */,
 				D409B6F3E1E128C9B48DDF0D /* Log.swift */,
 				61CF709D6B94F941E2529D84 /* RootView.swift */,
+				57EAD7376041603014B9B969 /* Secrets.swift */,
 				8B41E0978F976C7107938EA2 /* Theme.swift */,
 				D4A4116226A19CBF4E07167B /* API */,
 				260568249441F1230DAB91F9 /* Chat */,
@@ -255,12 +261,14 @@
 			files = (
 				D72D86358D7F177FA3F11ECC /* ChatView.swift in Sources */,
 				EA756F58258183542CDBF168 /* ChatViewModel.swift in Sources */,
+				E534B9853A485310DDEE209A /* ErrorReporter.swift in Sources */,
 				60379A915DB05685903CC59D /* LightwardAPI.swift in Sources */,
 				495A2EF2DEE25981084D1FBC /* LightwardApp.swift in Sources */,
 				DA58E8D348E1DA8DD9939BE7 /* Log.swift in Sources */,
 				A016300F3BADC6B245404148 /* PhoropterView.swift in Sources */,
 				35B05DB4DD32B4BDB27A99CE /* PhoropterViewModel.swift in Sources */,
 				A30947B4D7A061DB4C90F24F /* RootView.swift in Sources */,
+				BB82AEA850A82F695559AF3C /* Secrets.swift in Sources */,
 				E6FB0D31BE59AF82A4BD4715 /* Session.swift in Sources */,
 				47CD50EC4A22C0BF4EEEA0FA /* SessionRecordConverter.swift in Sources */,
 				7251F124FEACE9C70BCBCDFF /* Store.swift in Sources */,

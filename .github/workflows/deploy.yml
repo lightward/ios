@@ -40,4 +40,5 @@ jobs:
           ASC_KEY_CONTENT: ${{ secrets.ASC_KEY_CONTENT }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           BUILD_NUMBER: ${{ github.run_number }}
+          ERROR_REPORTER_TOKEN: ${{ secrets.ERROR_REPORTER_TOKEN }}
         run: bundle exec fastlane deploy

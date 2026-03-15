@@ -34,7 +34,7 @@ platform :ios do
     build_app(
       scheme: "Lightward",
       export_method: "app-store",
-      xcargs: "-allowProvisioningUpdates"
+      xcargs: "-allowProvisioningUpdates ERROR_REPORTER_TOKEN='#{ENV["ERROR_REPORTER_TOKEN"]}'"
     )
 
     upload_to_testflight(
