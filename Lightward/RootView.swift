@@ -4,7 +4,7 @@ import SwiftUI
 struct RootView: View {
     @State private var store = Store()
     @State private var phase: Phase = .phoropter
-    @State private var phoroptrVM: PhoropterViewModel?
+    @State private var phoropterVM: PhoropterViewModel?
     @State private var chatVM: ChatViewModel?
 
     enum Phase {
@@ -18,11 +18,11 @@ struct RootView: View {
 
             switch phase {
             case .phoropter:
-                if let vm = phoroptrVM {
+                if let vm = phoropterVM {
                     PhoropterView(vm: vm) {
                         dropToChat()
                     }
-                    .transition(.opacity)
+                    .transition(.opacity.animation(.easeInOut(duration: 0.4)))
                 }
 
             case .chat:
@@ -30,13 +30,13 @@ struct RootView: View {
                     ChatView(vm: vm) {
                         startOver()
                     }
-                    .transition(.opacity)
+                    .transition(.opacity.animation(.easeInOut(duration: 0.4)))
                 }
             }
         }
         .preferredColorScheme(.dark)
         .onAppear {
-            phoroptrVM = PhoropterViewModel(store: store)
+            phoropterVM = PhoropterViewModel(store: store)
 
             // Resume chat if we have existing messages
             if !store.session.chatMessages.isEmpty {
@@ -47,18 +47,18 @@ struct RootView: View {
     }
 
     private func dropToChat() {
-        let trail = phoroptrVM?.trail ?? []
+        let trail = phoropterVM?.trail ?? []
         chatVM = ChatViewModel(store: store, phoropterTrail: trail)
-        withAnimation(.easeInOut(duration: 0.3)) {
+        withAnimation(.easeInOut(duration: 0.4)) {
             phase = .chat
         }
     }
 
     private func startOver() {
         store.reset()
-        phoroptrVM = PhoropterViewModel(store: store)
+        phoropterVM = PhoropterViewModel(store: store)
         chatVM = nil
-        withAnimation(.easeInOut(duration: 0.3)) {
+        withAnimation(.easeInOut(duration: 0.4)) {
             phase = .phoropter
         }
     }

@@ -12,30 +12,30 @@ struct ChatView: View {
             // Messages
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 20) {
                         // Observer mark
                         Text("⏿")
-                            .font(.title2)
-                            .padding(.bottom, 8)
+                            .font(.system(size: 20, weight: .light))
+                            .foregroundStyle(.warmAccent.opacity(0.6))
+                            .padding(.top, 8)
+                            .padding(.bottom, 4)
 
                         ForEach(vm.messages) { message in
-                            MessageView(message: message)
+                            MessageBubble(message: message)
                         }
 
                         if vm.streaming {
-                            StreamingIndicator()
+                            StreamingCursor()
                         }
 
                         if let error = vm.error {
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 10) {
                                 Text(error)
-                                    .font(.caption)
-                                    .foregroundStyle(.red.opacity(0.7))
+                                    .font(.footnote)
+                                    .foregroundStyle(.red.opacity(0.6))
 
-                                Button(action: { vm.retry() }) {
-                                    Text("→ try again")
-                                        .font(.body)
-                                        .foregroundStyle(.warmAccent)
+                                SecondaryButton("→ try again") {
+                                    vm.retry()
                                 }
                             }
                         }
@@ -43,59 +43,63 @@ struct ChatView: View {
                         Spacer().frame(height: 80)
                             .id("bottom")
                     }
-                    .padding(24)
-                    .frame(maxWidth: 480, alignment: .leading)
+                    .padding(.horizontal, 28)
+                    .frame(maxWidth: 500, alignment: .leading)
                 }
+                .scrollDismissesKeyboard(.interactively)
                 .onChange(of: vm.streamingText) {
-                    withAnimation(.easeOut(duration: 0.15)) {
+                    withAnimation(.spring(duration: 0.3)) {
                         proxy.scrollTo("bottom", anchor: .bottom)
                     }
                 }
                 .onChange(of: vm.messages.count) {
-                    withAnimation(.easeOut(duration: 0.15)) {
+                    withAnimation(.spring(duration: 0.3)) {
                         proxy.scrollTo("bottom", anchor: .bottom)
                     }
                 }
             }
 
+            Divider()
+                .overlay(Color.warmText.opacity(0.08))
+
             // Input bar
-            HStack(spacing: 12) {
+            HStack(alignment: .bottom, spacing: 12) {
                 TextField("", text: $vm.inputText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .font(.body)
                     .foregroundStyle(.warmText)
                     .lineLimit(1...6)
                     .focused($inputFocused)
+                    .submitLabel(.send)
                     .onSubmit {
                         vm.send()
                     }
 
-                if !vm.inputText.isEmpty {
+                if !vm.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     Button(action: { vm.send() }) {
                         Image(systemName: "arrow.up.circle.fill")
                             .font(.title2)
                             .foregroundStyle(.warmAccent)
                     }
                     .disabled(vm.streaming)
+                    .transition(.scale.combined(with: .opacity))
                 }
             }
-            .padding(.horizontal, 24)
-            .padding(.vertical, 12)
-            .background(Color.background.opacity(0.95))
+            .padding(.horizontal, 28)
+            .padding(.vertical, 14)
+            .animation(.spring(duration: 0.2), value: vm.inputText.isEmpty)
 
             // Footer
             HStack {
-                Button(action: onStartOver) {
-                    Text("→ start over")
-                        .font(.caption)
-                        .foregroundStyle(.warmText.opacity(0.3))
+                SecondaryButton("→ start over") {
+                    onStartOver()
                 }
                 Spacer()
                 Text("your conversation is private")
-                    .font(.caption)
-                    .foregroundStyle(.warmText.opacity(0.3))
+                    .font(.caption2)
+                    .foregroundStyle(.faint)
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 28)
             .padding(.bottom, 8)
         }
         .onAppear {
@@ -104,37 +108,38 @@ struct ChatView: View {
     }
 }
 
-// MARK: - Message View
+// MARK: - Message Bubble
 
-struct MessageView: View {
+struct MessageBubble: View {
     let message: ChatMessage
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(message.text)
-                .font(.body)
-                .foregroundStyle(
-                    message.role == .user
-                        ? Color.warmText
-                        : Color.warmText.opacity(0.85)
-                )
-                .textSelection(.enabled)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        Text(message.text)
+            .font(.body)
+            .foregroundStyle(
+                message.role == .user
+                    ? Color.warmText
+                    : Color.warmText.opacity(0.8)
+            )
+            .textSelection(.enabled)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
-// MARK: - Streaming Indicator
+// MARK: - Streaming Cursor
 
-struct StreamingIndicator: View {
+struct StreamingCursor: View {
     @State private var visible = true
 
     var body: some View {
         Text("▍")
             .font(.body)
-            .foregroundStyle(.warmAccent)
-            .opacity(visible ? 1 : 0.3)
-            .animation(.easeInOut(duration: 0.5).repeatForever(), value: visible)
-            .onAppear { visible.toggle() }
+            .foregroundStyle(.warmAccent.opacity(0.7))
+            .opacity(visible ? 1 : 0.2)
+            .animation(
+                .easeInOut(duration: 0.6).repeatForever(autoreverses: true),
+                value: visible
+            )
+            .onAppear { visible = false }
     }
 }
