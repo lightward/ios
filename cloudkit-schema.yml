@@ -1,0 +1,22 @@
+# CloudKit schema for the Lightward iOS app.
+# Container: iCloud.com.lightward
+# Zone: LightwardZone (private database)
+#
+# All fields that the app writes must be declared here.
+# The CloudKit Console must have recordName marked as Queryable.
+
+record_types:
+  Session:
+    fields:
+      phoropterTrailJSON:
+        type: String
+        description: JSON array of phoropter choices the user selected toward
+      chatMessagesJSON:
+        type: String
+        description: JSON array of ChatMessage objects (id, role, text, timestamp)
+      createdDate:
+        type: Date/Time
+        description: When the session was created
+      modifiedDate:
+        type: Date/Time
+        description: When the session was last modified (used for conflict resolution)

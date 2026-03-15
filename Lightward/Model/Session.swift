@@ -28,11 +28,17 @@ struct Session: Codable, Identifiable {
     let created: Date
     var modified: Date
 
-    init() {
-        self.id = UUID()
-        self.phoropterTrail = []
-        self.chatMessages = []
-        self.created = Date()
-        self.modified = Date()
+    init(
+        id: UUID = UUID(),
+        phoropterTrail: [String] = [],
+        chatMessages: [ChatMessage] = [],
+        created: Date = Date(),
+        modified: Date = Date()
+    ) {
+        self.id = id
+        self.phoropterTrail = phoropterTrail
+        self.chatMessages = chatMessages
+        self.created = created
+        self.modified = modified
     }
 }

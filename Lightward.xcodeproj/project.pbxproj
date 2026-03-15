@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B5EF0980DE84575A3EB37F1 /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A414C3C7EB85A76C921DF3 /* SyncCoordinator.swift */; };
 		35B05DB4DD32B4BDB27A99CE /* PhoropterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8767EEFD5035434FD48BCF59 /* PhoropterViewModel.swift */; };
+		47CD50EC4A22C0BF4EEEA0FA /* SessionRecordConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B8F9961C5EF7F6D0043DE3 /* SessionRecordConverter.swift */; };
 		49142B53FFD1CF773753F1A0 /* WarmupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A132141D99A727B748E768 /* WarmupMessages.swift */; };
 		495A2EF2DEE25981084D1FBC /* LightwardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5859B9B47E69E55F27E70894 /* LightwardApp.swift */; };
 		54A4D7CB487C97E5BF4D4BE6 /* PhoropterContext.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8A7CC1354CE106FD82E15968 /* PhoropterContext.txt */; };
@@ -26,6 +28,7 @@
 		036FA252BC6E70CA922D890C /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		05F698DF085F24599D35CB9C /* Lightward.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lightward.entitlements; sourceTree = "<group>"; };
 		3395F1CE32AFD7216F0D6254 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		41B8F9961C5EF7F6D0043DE3 /* SessionRecordConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordConverter.swift; sourceTree = "<group>"; };
 		5859B9B47E69E55F27E70894 /* LightwardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightwardApp.swift; sourceTree = "<group>"; };
 		61CF709D6B94F941E2529D84 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		741D20ECF440169D24BB7B42 /* PhoropterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoropterView.swift; sourceTree = "<group>"; };
@@ -39,6 +42,7 @@
 		D7A132141D99A727B748E768 /* WarmupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupMessages.swift; sourceTree = "<group>"; };
 		DBB7BFECD521F99D0321ED65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		ED3A43BBDCA0DC7F7103B90E /* Lightward.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Lightward.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2A414C3C7EB85A76C921DF3 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -61,6 +65,7 @@
 				8B41E0978F976C7107938EA2 /* Theme.swift */,
 				D4A4116226A19CBF4E07167B /* API */,
 				260568249441F1230DAB91F9 /* Chat */,
+				7648FC382EB6EC524426FF4C /* CloudKit */,
 				E87DA1EDB1D5ABE0B217E4DC /* Model */,
 				F620436512F79E8E5E729C26 /* Phoropter */,
 				83A337FD65C10F3F42E57ABB /* Resources */,
@@ -83,6 +88,15 @@
 				20CB228B57D1782BA3E45EA2 /* Lightward */,
 				1EF1E6C570C5D2E663392652 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		7648FC382EB6EC524426FF4C /* CloudKit */ = {
+			isa = PBXGroup;
+			children = (
+				41B8F9961C5EF7F6D0043DE3 /* SessionRecordConverter.swift */,
+				F2A414C3C7EB85A76C921DF3 /* SyncCoordinator.swift */,
+			);
+			path = CloudKit;
 			sourceTree = "<group>";
 		};
 		83A337FD65C10F3F42E57ABB /* Resources */ = {
@@ -199,7 +213,9 @@
 				35B05DB4DD32B4BDB27A99CE /* PhoropterViewModel.swift in Sources */,
 				A30947B4D7A061DB4C90F24F /* RootView.swift in Sources */,
 				E6FB0D31BE59AF82A4BD4715 /* Session.swift in Sources */,
+				47CD50EC4A22C0BF4EEEA0FA /* SessionRecordConverter.swift in Sources */,
 				7251F124FEACE9C70BCBCDFF /* Store.swift in Sources */,
+				1B5EF0980DE84575A3EB37F1 /* SyncCoordinator.swift in Sources */,
 				F8EEB1E8387E5603AC78D7A8 /* Theme.swift in Sources */,
 				49142B53FFD1CF773753F1A0 /* WarmupMessages.swift in Sources */,
 			);
