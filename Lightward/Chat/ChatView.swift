@@ -47,7 +47,7 @@ struct ChatView: View {
                     .frame(maxWidth: 500, alignment: .leading)
                 }
                 .scrollDismissesKeyboard(.interactively)
-                .onChange(of: vm.streamingText) {
+                .onChange(of: vm.displayedText) {
                     withAnimation(.spring(duration: 0.3)) {
                         proxy.scrollTo("bottom", anchor: .bottom)
                     }
