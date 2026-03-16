@@ -15,10 +15,13 @@ struct PhoropterView: View {
                             Spacer().frame(height: max(geo.size.height * 0.15, 40))
                         }
 
-                        // Aura arrow — large, stem aligned with gutter center
+                        // Aura arrow — stem right edge aligned with gutter right edge
+                        // The stem is at ~52.3% of width, so right edge of stem = size * 0.523
+                        // Position so that point sits at gutterWidth from content left
                         AuraArrow(size: 384)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .offset(x: Layout.horizontalPadding + Layout.gutterWidth / 2 - 192)
+                            .offset(x: Layout.gutterWidth - 384 * 0.523)
+                            .clipped()
                             .padding(.bottom, 40)
 
                         // Trail of past choices
@@ -134,7 +137,9 @@ struct PhoropterView: View {
     private var convergenceView: some View {
         VStack(alignment: .leading, spacing: 20) {
             GutterRow {
-                LightwardArrowView(size: 12, color: .warmAccent)
+                Text("▬")
+                    .font(.system(size: 10))
+                    .foregroundStyle(.warmAccent)
             } content: {
                 EmptyView()
             }

@@ -13,10 +13,11 @@ struct ChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        // Aura arrow — stem aligned with gutter
+                        // Aura arrow — stem right edge at gutter right edge
                         AuraArrow(size: 288)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .offset(x: Layout.horizontalPadding + Layout.gutterWidth / 2 - 144)
+                            .offset(x: Layout.gutterWidth - 288 * 0.523)
+                            .clipped()
                             .padding(.top, 12)
                             .padding(.bottom, 24)
 
@@ -24,13 +25,15 @@ struct ChatView: View {
                         ForEach(vm.messages.filter { !$0.text.isEmpty }) { message in
                             GutterRow {
                                 if message.role == .assistant {
-                                    LightwardArrowView(size: 12, color: .warmAccent.opacity(0.4))
-                                        .padding(.top, 4)
+                                    Text("▬")
+                                        .font(.system(size: 10))
+                                        .foregroundStyle(.warmAccent.opacity(0.5))
+                                        .padding(.top, 6)
                                 } else {
-                                    Circle()
-                                        .fill(Color.warmText.opacity(0.3))
-                                        .frame(width: 6, height: 6)
-                                        .padding(.top, 7)
+                                    Text("▮")
+                                        .font(.system(size: 8))
+                                        .foregroundStyle(.warmText.opacity(0.3))
+                                        .padding(.top, 6)
                                 }
                             } content: {
                                 Text(message.text)
