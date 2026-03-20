@@ -7,6 +7,7 @@ struct ChatView: View {
 
     @FocusState private var inputFocused: Bool
     @State private var showingStartOverConfirmation = false
+    @State private var showingPrivacy = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -124,15 +125,27 @@ struct ChatView: View {
                     showingStartOverConfirmation = true
                 }
                 Spacer()
-                Text("your conversation is private")
-                    .font(.caption2)
-                    .foregroundStyle(.faint)
+                Button {
+                    showingPrivacy = true
+                } label: {
+                    Text("your conversation is private")
+                        .font(.caption2)
+                        .foregroundStyle(.faint)
+                }
             }
             .padding(.horizontal, Layout.horizontalPadding)
             .padding(.bottom, 8)
         }
         .onAppear {
             vm.initiateIfNeeded()
+        }
+        .sheet(isPresented: $showingPrivacy) {
+            ZStack {
+                Color.background.ignoresSafeArea()
+                ConsentView {
+                    showingPrivacy = false
+                }
+            }
         }
         .confirmationDialog("Start over?", isPresented: $showingStartOverConfirmation) {
             Button("Start over", role: .destructive) {
