@@ -1,11 +1,12 @@
 import SwiftUI
 
-/// Root view managing the phoropter → chat flow.
+/// Root view managing consent → phoropter → chat flow.
 struct RootView: View {
     @State private var store = Store()
     @State private var phase: Phase = .phoropter
     @State private var phoropterVM: PhoropterViewModel?
     @State private var chatVM: ChatViewModel?
+    @State private var hasConsented = UserDefaults.standard.bool(forKey: "hasConsented")
 
     enum Phase {
         case phoropter
@@ -16,21 +17,31 @@ struct RootView: View {
         ZStack {
             Color.background.ignoresSafeArea()
 
-            switch phase {
-            case .phoropter:
-                if let vm = phoropterVM {
-                    PhoropterView(vm: vm) {
-                        dropToChat()
+            if !hasConsented {
+                ConsentView {
+                    UserDefaults.standard.set(true, forKey: "hasConsented")
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        hasConsented = true
                     }
-                    .transition(.opacity.animation(.easeInOut(duration: 0.4)))
                 }
-
-            case .chat:
-                if let vm = chatVM {
-                    ChatView(vm: vm) {
-                        startOver()
+                .transition(.opacity)
+            } else {
+                switch phase {
+                case .phoropter:
+                    if let vm = phoropterVM {
+                        PhoropterView(vm: vm) {
+                            dropToChat()
+                        }
+                        .transition(.opacity.animation(.easeInOut(duration: 0.4)))
                     }
-                    .transition(.opacity.animation(.easeInOut(duration: 0.4)))
+
+                case .chat:
+                    if let vm = chatVM {
+                        ChatView(vm: vm) {
+                            startOver()
+                        }
+                        .transition(.opacity.animation(.easeInOut(duration: 0.4)))
+                    }
                 }
             }
         }

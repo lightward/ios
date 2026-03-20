@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B5EF0980DE84575A3EB37F1 /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A414C3C7EB85A76C921DF3 /* SyncCoordinator.swift */; };
+		1D575BEA1AF711D76AED0661 /* ConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B2C4F8EFECE56B55641884 /* ConsentView.swift */; };
 		35B05DB4DD32B4BDB27A99CE /* PhoropterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8767EEFD5035434FD48BCF59 /* PhoropterViewModel.swift */; };
 		47CD50EC4A22C0BF4EEEA0FA /* SessionRecordConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B8F9961C5EF7F6D0043DE3 /* SessionRecordConverter.swift */; };
 		49142B53FFD1CF773753F1A0 /* WarmupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A132141D99A727B748E768 /* WarmupMessages.swift */; };
@@ -57,6 +58,7 @@
 		8A7CC1354CE106FD82E15968 /* PhoropterContext.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PhoropterContext.txt; sourceTree = "<group>"; };
 		8A9740F34A497AA30E6D4A7F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		8B41E0978F976C7107938EA2 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		98B2C4F8EFECE56B55641884 /* ConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentView.swift; sourceTree = "<group>"; };
 		BCC6B34171A61336C6EA1FAC /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		C3E151CB031FBE9C66740FFB /* LightwardAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightwardAPI.swift; sourceTree = "<group>"; };
 		C428CC7B8AD80BB3F87406A0 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				C428CC7B8AD80BB3F87406A0 /* Arrow.swift */,
 				7BD9CF5C099920F1576987CF /* Assets.xcassets */,
 				6FD39565947A3FD1E3951984 /* AuraArrow.swift */,
+				98B2C4F8EFECE56B55641884 /* ConsentView.swift */,
 				D8DDBCE51B203ED468D4FBC4 /* ErrorReporter.swift */,
 				DBB7BFECD521F99D0321ED65 /* Info.plist */,
 				05F698DF085F24599D35CB9C /* Lightward.entitlements */,
@@ -269,6 +272,7 @@
 				BA95BB76A2D5D25694C84ADD /* AuraArrow.swift in Sources */,
 				D72D86358D7F177FA3F11ECC /* ChatView.swift in Sources */,
 				EA756F58258183542CDBF168 /* ChatViewModel.swift in Sources */,
+				1D575BEA1AF711D76AED0661 /* ConsentView.swift in Sources */,
 				E534B9853A485310DDEE209A /* ErrorReporter.swift in Sources */,
 				60379A915DB05685903CC59D /* LightwardAPI.swift in Sources */,
 				495A2EF2DEE25981084D1FBC /* LightwardApp.swift in Sources */,
