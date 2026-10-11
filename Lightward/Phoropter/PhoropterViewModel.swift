@@ -26,8 +26,9 @@ final class PhoropterViewModel {
     var aiResponseCount = 0
 
     private let store: Store
-    /// Fetched once per phoropter session; usually settled before the first choice needs it.
-    private let phoropterContext: Task<String, Never>
+    /// Fetched once per phoropter session, starting at the first choice — never before
+    /// consent, and never for someone who hasn't begun.
+    private var phoropterContext: Task<String, Never>?
     private var currentTask: Task<Void, Never>?
     private var revealTask: Task<Void, Never>?
 
@@ -42,7 +43,12 @@ final class PhoropterViewModel {
 
     init(store: Store) {
         self.store = store
-        self.phoropterContext = Task { await PhoropterContext.load() }
+    }
+
+    private func context() async -> String {
+        let task = phoropterContext ?? Task { await PhoropterContext.load() }
+        phoropterContext = task
+        return await task.value
     }
 
     func cycleEntry() {
@@ -96,7 +102,7 @@ final class PhoropterViewModel {
         currentTask = Task {
             do {
                 let payload = LightwardAPI.buildPhoropterPayload(
-                    context: await phoropterContext.value,
+                    context: await context(),
                     trajectory: trail
                 )
 
