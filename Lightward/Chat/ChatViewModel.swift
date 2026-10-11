@@ -40,7 +40,7 @@ final class ChatViewModel {
         }
 
         Log.chat.info("Initiating with trail: \(self.phoropterTrail, privacy: .public)")
-        streamResponse(chatLog: LightwardAPI.buildTransitionChatLog(trajectory: phoropterTrail))
+        streamResponse(chatLog: LightwardAPI.buildChatLog(trajectory: phoropterTrail))
     }
 
     func retry() {
@@ -60,7 +60,7 @@ final class ChatViewModel {
         messages.append(userMessage)
         store.appendMessage(userMessage)
 
-        let chatLog = LightwardAPI.buildChatLog(messages: messages)
+        let chatLog = LightwardAPI.buildChatLog(trajectory: phoropterTrail, messages: messages)
         streamResponse(chatLog: chatLog)
     }
 
