@@ -35,6 +35,7 @@ The `.xcodeproj` is checked into git for convenience but is fully reproducible f
 ## API integration
 
 - **Phoropter**: `POST /api/plain` with phoropter context + trajectory as plain text body
+- **Phoropter context**: fetched from `https://phoropter.ai/README.md`, the same file phoropter.ai loads at runtime, so edit it there, not here. The last good fetch is cached; `Resources/PhoropterContext.txt` is only the cold-start fallback. See `PhoropterContext.swift`.
 - **Chat**: `POST /api/stream` with JSON `{ "chat_log": [...] }` — opens with the phoropter handoff (the trail, rebuilt from the saved session on every turn), which carries the one `cache_control` marker the server requires; the conversation follows. The handoff is the conversation frame. See `LightwardAPI.buildChatLog`.
 
 ## Build & deploy

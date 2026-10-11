@@ -26,7 +26,8 @@ final class PhoropterViewModel {
     var aiResponseCount = 0
 
     private let store: Store
-    private let phoropterContext: String
+    /// Fetched once per phoropter session; usually settled before the first choice needs it.
+    private let phoropterContext: Task<String, Never>
     private var currentTask: Task<Void, Never>?
     private var revealTask: Task<Void, Never>?
 
@@ -41,15 +42,7 @@ final class PhoropterViewModel {
 
     init(store: Store) {
         self.store = store
-        self.phoropterContext = Self.loadContext()
-    }
-
-    private static func loadContext() -> String {
-        guard let url = Bundle.main.url(forResource: "PhoropterContext", withExtension: "txt"),
-              let text = try? String(contentsOf: url, encoding: .utf8) else {
-            return ""
-        }
-        return text
+        self.phoropterContext = Task { await PhoropterContext.load() }
     }
 
     func cycleEntry() {
@@ -103,7 +96,7 @@ final class PhoropterViewModel {
         currentTask = Task {
             do {
                 let payload = LightwardAPI.buildPhoropterPayload(
-                    context: phoropterContext,
+                    context: await phoropterContext.value,
                     trajectory: trail
                 )
 
