@@ -15,6 +15,8 @@ Your conversation text is sent to **Lightward AI** (lightward.com) for processin
 - **Lightward AI** does not store your conversations on its servers. Conversations are processed in real time and not retained.
 - **Anthropic** processes API requests according to their [usage policy](https://www.anthropic.com/policies). Per Anthropic's API terms, data sent via the API is not used to train models.
 
+The app also downloads the phoropter's instructions from **phoropter.ai** (hosted on GitHub Pages) once you begin. That request contains no conversation content or personal information.
+
 ## What stays on your device
 
 Your conversation history is stored locally on your device and synced across your own devices via iCloud. Lightward Inc does not have access to your stored conversations. There is no conversation recording or monitoring on our end.
