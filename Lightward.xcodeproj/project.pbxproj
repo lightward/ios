@@ -11,10 +11,10 @@
 		1D575BEA1AF711D76AED0661 /* ConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B2C4F8EFECE56B55641884 /* ConsentView.swift */; };
 		35B05DB4DD32B4BDB27A99CE /* PhoropterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8767EEFD5035434FD48BCF59 /* PhoropterViewModel.swift */; };
 		47CD50EC4A22C0BF4EEEA0FA /* SessionRecordConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B8F9961C5EF7F6D0043DE3 /* SessionRecordConverter.swift */; };
-		49142B53FFD1CF773753F1A0 /* WarmupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A132141D99A727B748E768 /* WarmupMessages.swift */; };
 		495A2EF2DEE25981084D1FBC /* LightwardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5859B9B47E69E55F27E70894 /* LightwardApp.swift */; };
 		54A4D7CB487C97E5BF4D4BE6 /* PhoropterContext.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8A7CC1354CE106FD82E15968 /* PhoropterContext.txt */; };
 		60379A915DB05685903CC59D /* LightwardAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E151CB031FBE9C66740FFB /* LightwardAPI.swift */; };
+		6F9B6B00783E5617FBB54578 /* ChatLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23D85D1244F162E1492DB65 /* ChatLogTests.swift */; };
 		7251F124FEACE9C70BCBCDFF /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3395F1CE32AFD7216F0D6254 /* Store.swift */; };
 		79A8F2DC09C9FFACF0539195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BD9CF5C099920F1576987CF /* Assets.xcassets */; };
 		A016300F3BADC6B245404148 /* PhoropterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D20ECF440169D24BB7B42 /* PhoropterView.swift */; };
@@ -59,11 +59,11 @@
 		8A9740F34A497AA30E6D4A7F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		8B41E0978F976C7107938EA2 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		98B2C4F8EFECE56B55641884 /* ConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentView.swift; sourceTree = "<group>"; };
+		A23D85D1244F162E1492DB65 /* ChatLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogTests.swift; sourceTree = "<group>"; };
 		BCC6B34171A61336C6EA1FAC /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		C3E151CB031FBE9C66740FFB /* LightwardAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightwardAPI.swift; sourceTree = "<group>"; };
 		C428CC7B8AD80BB3F87406A0 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
 		D409B6F3E1E128C9B48DDF0D /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		D7A132141D99A727B748E768 /* WarmupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupMessages.swift; sourceTree = "<group>"; };
 		D8DDBCE51B203ED468D4FBC4 /* ErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporter.swift; sourceTree = "<group>"; };
 		DBB7BFECD521F99D0321ED65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		ED3A43BBDCA0DC7F7103B90E /* Lightward.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Lightward.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +143,7 @@
 		B25A6AD0EB8AFD1E6AF4722C /* LightwardTests */ = {
 			isa = PBXGroup;
 			children = (
+				A23D85D1244F162E1492DB65 /* ChatLogTests.swift */,
 				62FA0BC5F7E742BA1DED525D /* PhoropterTests.swift */,
 			);
 			path = LightwardTests;
@@ -152,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				C3E151CB031FBE9C66740FFB /* LightwardAPI.swift */,
-				D7A132141D99A727B748E768 /* WarmupMessages.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -286,7 +286,6 @@
 				7251F124FEACE9C70BCBCDFF /* Store.swift in Sources */,
 				1B5EF0980DE84575A3EB37F1 /* SyncCoordinator.swift in Sources */,
 				F8EEB1E8387E5603AC78D7A8 /* Theme.swift in Sources */,
-				49142B53FFD1CF773753F1A0 /* WarmupMessages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F9B6B00783E5617FBB54578 /* ChatLogTests.swift in Sources */,
 				C0544685049FA94C5B878D15 /* PhoropterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

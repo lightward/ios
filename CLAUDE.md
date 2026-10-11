@@ -35,8 +35,7 @@ The `.xcodeproj` is checked into git for convenience but is fully reproducible f
 ## API integration
 
 - **Phoropter**: `POST /api/plain` with phoropter context + trajectory as plain text body
-- **Chat**: `POST /api/stream` with JSON `{ "chat_log": [...] }` — warmup messages prepended, exactly one `cache_control` marker required (on last warmup message)
-- **Warmup messages**: In `WarmupMessages.swift` — these are specific to this iOS app context and should not be copied from the web client
+- **Chat**: `POST /api/stream` with JSON `{ "chat_log": [...] }` — opens with the phoropter handoff (the trail, rebuilt from the saved session on every turn), which carries the one `cache_control` marker the server requires; the conversation follows. The handoff is the conversation frame. See `LightwardAPI.buildChatLog`.
 
 ## Build & deploy
 
@@ -49,4 +48,4 @@ Fastlane + GitHub Actions, same pattern as [Softer](../softer). Deploys to TestF
 - [x] Local session persistence
 - [ ] CloudKit conversation sync across devices
 - [ ] App icon
-- [ ] Warmup messages — need genuine inhabitation, not just mechanical accuracy
+- [ ] Handoff message — the transition text is the whole frame now; it may want more of the app's context, experience-tested with the model

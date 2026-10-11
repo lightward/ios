@@ -149,9 +149,21 @@ enum LightwardAPI {
         }
     }
 
-    /// Builds a chat_log array from warmup messages + conversation messages.
-    static func buildChatLog(messages: [ChatMessage]) -> [[String: Any]] {
-        var log = WarmupMessages.messages
+    /// Builds a chat_log: the phoropter handoff as the opening message, then the conversation.
+    ///
+    /// The handoff is the conversation frame. It carries the one cache_control marker the
+    /// server requires, and it's rebuilt identically on every turn from the saved trail —
+    /// so the trail stays in context for the whole conversation, the log always opens with
+    /// a user message, and the frame stays cacheable across turns.
+    static func buildChatLog(trajectory: [String], messages: [ChatMessage] = []) -> [[String: Any]] {
+        var log: [[String: Any]] = [[
+            "role": "user",
+            "content": [[
+                "type": "text",
+                "text": transitionText(trajectory: trajectory),
+                "cache_control": ["type": "ephemeral"]
+            ]]
+        ]]
         for msg in messages {
             log.append([
                 "role": msg.role.rawValue,
@@ -172,21 +184,15 @@ enum LightwardAPI {
         return payload
     }
 
-    /// Builds the transition message when dropping from phoropter to chat.
-    static func buildTransitionChatLog(trajectory: [String]) -> [[String: Any]] {
+    /// The handoff from phoropter to chat: everything the user chose toward, in order.
+    static func transitionText(trajectory: [String]) -> String {
         var payload = "the user came through phoropter and chose toward these, in order:\n"
         for choice in trajectory {
             payload += choice + "\n"
         }
         payload += "\nthey've chosen to talk directly now. meet them where they are. "
         payload += "respond naturally, conversationally — no binary choices, just you and them."
-
-        var log = WarmupMessages.messages
-        log.append([
-            "role": "user",
-            "content": [["type": "text", "text": payload]]
-        ])
-        return log
+        return payload
     }
 }
 
